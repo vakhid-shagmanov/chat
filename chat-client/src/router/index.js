@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginPage from '../views/LoginPage.vue'
+import RegistrationPage from '../views/RegistrationPage.vue'
 
 Vue.use(VueRouter)
 
@@ -11,17 +13,33 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/login',
+    name: 'login',
+    component: LoginPage
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    component: RegistrationPage
   }
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = localStorage.getItem('user')
+  const isToRegistrationPage = to.path !== '/registration'
+
+  if (authRequired && !loggedIn && isToRegistrationPage) {
+    return next('/login')
+  }
+
+  next()
 })
 
 export default router

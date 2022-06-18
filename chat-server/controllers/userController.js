@@ -1,6 +1,3 @@
-import User from '../models/userModel.js';
-import bcrypt from 'bcryptjs';
-import jwt  from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import UserServices from '../services/userService.js';
 
@@ -13,7 +10,7 @@ class authController {
             const { username, password } = req.body
             const userData = await UserServices.registration(username, password)
 
-            res.cookie('refreshToken', userData.refresh, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
+            res.cookie('refresh', userData.refresh, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
             return res.json(userData)
         } catch (error) {
             console.log(error)
@@ -26,7 +23,7 @@ class authController {
             const { username, password } = req.body
             const userData = await UserServices.login(username, password);
 
-            res.cookie('refreshToken', userData.refresh, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
+            res.cookie('refresh', userData.refresh, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
             return res.json(userData)
         } catch (error) {
             console.log(error)
@@ -38,7 +35,7 @@ class authController {
         try {
             const { refresh } = req.cookies
             await UserServices.logout(refresh)
-            res.clearCookie('refreshToken')
+            res.clearCookie('refresh')
             return res.status(200)
         } catch (error) {
             console.log(error)
