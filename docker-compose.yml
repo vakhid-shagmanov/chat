@@ -20,7 +20,7 @@ services:
       - 6000:6000
     volumes:
       - ./chat-server/:/opt/server
-      - node_modules:/opt/server/node_modules
+      - server_modules:/opt/server/node_modules
     depends_on:
       - db
   
@@ -28,10 +28,13 @@ services:
     build: chat-client/
     ports:
       - 8080:8080
+    volumes:
+      - ./chat-client/:/opt/chat-client
+      - client_modules:/opt/chat-client/node_modules
     depends_on:
       - server
-      - db
 
 volumes:
   dbdata:
-  node_modules:
+  server_modules:
+  client_modules:
