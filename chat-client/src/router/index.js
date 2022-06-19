@@ -32,7 +32,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login']
   const authRequired = !publicPages.includes(to.path)
-  const loggedIn = localStorage.getItem('user')
+  const loggedIn = JSON.parse(localStorage.getItem('user')).access
   const isToRegistrationPage = to.path !== '/registration'
 
   if (authRequired && !loggedIn && isToRegistrationPage) {

@@ -1,8 +1,8 @@
 <template>
   <div class="registration">
     <header class="registration-header">Регистрация</header>
-    <form v-on:submit.prevent class="registration-form">
-      <input type="text" v-model="form.name" placeholder="Login">
+    <form v-on:submit.prevent="submit" class="registration-form">
+      <input type="text" v-model="form.username" placeholder="Login">
       <input type="password" v-model="form.password" placeholder="Password">
       <button type="submit">Отправить</button>
     </form>
@@ -13,14 +13,24 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
 export default {
   data () {
     return {
       form: {
-        name: '',
+        username: '',
         password: ''
       }
+    }
+  },
+  created () {
+    this.logout()
+  },
+  methods: {
+    ...mapActions(['login', 'logout']),
+    submit () {
+      this.login(Object.freeze(this.form))
     }
   }
 }

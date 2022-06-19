@@ -5,7 +5,7 @@ class authController {
     async registration(req, res) {
         try {
             const error = validationResult(req)
-            if(!error.isEmpty()) return res.status(400).json({ message: 'Username is empty' })
+            if(!error.isEmpty()) return res.status(400).json({ message: 'error' })
 
             const { username, password } = req.body
             const userData = await UserServices.registration(username, password)
